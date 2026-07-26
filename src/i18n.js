@@ -1,7 +1,7 @@
 // Bilingüe es/en (CONVENCIONES §9). Español neutro / tuteo, SIN voseo.
 // Lenguaje llano (§9.1): explicamos el beneficio, no la implementación.
 
-export const LANG_KEY = 'dotrino_reputation:lang'
+export const LANG_KEY = 'dotrino-reputation-app:lang'
 
 export function detectLang () {
   try {

@@ -103,7 +103,7 @@ const isProfile = computed(() => current.value?.type === 'profile')
     :lang="lang"
     profile
     support-href="https://ko-fi.com/dotrino"
-    support-repo="imdotrino/dotrino_reputation"
+    support-repo="imdotrino/dotrino-reputation-app"
     support-discord="https://discord.gg/D648uq7cth"
     @dotrino-lang="onLang"
     @dotrino-profile-name="onProfileName"
