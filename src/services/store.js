@@ -2,13 +2,20 @@
 // mostrarlos como "vistos hace poco". Es lo único durable de esta app (las
 // calificaciones/preguntas viajan al registro, no al store). Best-effort.
 import { Store } from '@dotrino/store'
+import { getIdentity } from './identity.js'
 
 const RECENTS = 'reputation:recent-subjects'
 const MAX = 24
 
 let store = null
-async function getStore () {
-  if (!store) store = await Store.connect()
+export async function getStore () {
+  if (store) return store
+  // Atado al PERFIL (respaldo en la bóveda, sin mezclar cuentas). Hasta 2026-09-30 conectaba
+  // sin identidad y todo quedaba en el espacio común del navegador; `adoptCommon` lo trae al
+  // perfil una vez, sin borrar el original.
+  const identity = await getIdentity()
+  if (!identity) throw Object.assign(new Error('identity not available'), { code: 'no-identity' })
+  store = await Store.connect({ identity, adoptCommon: ['reputation:'] })
   return store
 }
 
