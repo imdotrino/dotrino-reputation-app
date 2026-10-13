@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import { execSync } from 'node:child_process'
+import prerender from '@dotrino/prerender/vite'
 
 // Hash del commit del build → <meta name="commit"> (CONVENCIONES §3): permite
 // verificar qué versión sirve el dominio y diagnosticar cachés viejas.
@@ -19,6 +20,8 @@ function commitMeta () {
 export default defineConfig({
   base: './',
   plugins: [
+    // El HTML llega con contenido para quien lo lee sin ejecutar JavaScript.
+    prerender(),
     vue({
       template: {
         compilerOptions: {
