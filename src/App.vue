@@ -21,25 +21,12 @@ const topbarRef = ref(null)
 const recents = ref([])
 const current = ref(null)        // { ref, type, value }
 
-// Tema del modal de perfil (topbar es dueño), acorde al claro Cool & Cozy.
-const profileTheme = {
-  '--ccp-bg': '#ffffff', '--ccp-bg-2': '#f4f7f9', '--ccp-bg-3': '#eaeff3', '--ccp-bg-4': '#e3e9ed',
-  '--ccp-border': '#cfd8de', '--ccp-text': '#181c1e', '--ccp-muted': '#4a5560',
-  '--ccp-accent': '#00658c', '--ccp-accent-2': '#00506f', '--ccp-accent-text': '#ffffff',
-  '--ccp-gold': '#c98a00', '--ccp-derived': '#b07f00',
-  '--ccp-online': '#00897b', '--ccp-affinity': '#2f8fd6', '--ccp-input-bg': '#f1f4f6', '--ccp-radius': '16px',
-  '--ccp-font': "'Quicksand', 'Hanken Grotesk', system-ui, sans-serif",
-  '--ccp-font-headline': "'Quicksand', 'Bricolage Grotesque', system-ui, sans-serif",
-  '--ccp-font-mono': "'JetBrains Mono', ui-monospace, monospace",
-}
-
 // Pasa identity/reputation/tema al topbar (propiedades JS del Web Component).
 watchEffect(() => {
   const tb = topbarRef.value
   if (!tb) return
   tb.identity = identityInst.value ?? null
   tb.reputation = reputationInst.value ?? null
-  tb.profileTheme = profileTheme
 })
 
 // El estado del respaldo en la bóveda, a la vista en el botón de perfil (topbar ≥ 0.13).
@@ -108,7 +95,7 @@ const isProfile = computed(() => current.value?.type === 'profile')
     icon="/icon.svg"
     brand-href="./"
     :lang="lang"
-    profile
+    profile theme
     support-href="https://ko-fi.com/dotrino"
     support-repo="imdotrino/dotrino-reputation-app"
     support-discord="https://discord.gg/D648uq7cth"
@@ -143,18 +130,11 @@ const isProfile = computed(() => current.value?.type === 'profile')
 .topbar {
   position: sticky; top: 0; z-index: 100;
   /* Tema del topbar (el paquete lee estas vars con fallback al oscuro). */
-  --dotrino-topbar-bg: rgba(244, 247, 249, 0.9);
-  --dotrino-topbar-border: var(--line);
-  --dotrino-topbar-text: var(--text);
-  --dotrino-topbar-muted: var(--text-dim);
-  --dotrino-topbar-accent: var(--accent);
-  --dotrino-topbar-accent-text: var(--accent-ink);
-  --dotrino-topbar-font: var(--font-body);
   /* Moneda de support (vive en el shadow del topbar): las --ds-* heredan hacia
      adentro y la tematizan clara. */
-  --ds-accent: #00658c; --ds-accent-press: #00506f;
-  --ds-modal-bg: #ffffff; --ds-modal-text: #181c1e; --ds-modal-muted: #4a5560;
-  --ds-modal-border: #e3e9ed; --ds-modal-hover: rgba(0, 0, 0, 0.06);
+
+
+
   display: block;
 }
 .topbar::part(brand-icon) { width: 32px; height: 32px; border-radius: 8px; }

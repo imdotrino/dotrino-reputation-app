@@ -1,120 +1,43 @@
 /* ─────────────────────────────────────────────────────────────────────────
-   Reputation — base global, tema «Cool & Cozy» (el mismo del home).
-   Fuentes AUTOHOSPEDADAS (filosofía del ecosistema: sin JS ni recursos de
-   terceros, no se filtra la IP del visitante a Google Fonts). woff2 en
-   /public/fonts.
+   Reputation — base global. Colores, fuentes y geometría son los del
+   ecosistema (@dotrino/theme, CONVENCIONES §5): aquí solo se nombran con lo
+   que usan los componentes. Los propios de Reputation (dorado = confianza,
+   violeta = conocimiento) salen del tema también.
    ───────────────────────────────────────────────────────────────────────── */
-
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque.woff2') format('woff2');
-  font-weight: 200 800;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Hanken Grotesk';
-  src: url('/fonts/hanken-grotesk.woff2') format('woff2');
-  font-weight: 100 900;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono-400.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
-/* Quicksand (variable 300–700) — display+texto del sistema Cool & Cozy. */
-@font-face {
-  font-family: 'Quicksand';
-  src: url('/fonts/quicksand.woff2') format('woff2');
-  font-weight: 300 700;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Quicksand';
-  src: url('/fonts/quicksand-ext.woff2') format('woff2');
-  font-weight: 300 700;
-  font-display: swap;
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-/* Comfortaa Bold — exclusiva del wordmark de marca. */
-@font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/comfortaa.woff2') format('woff2');
-  font-weight: 700;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/comfortaa-ext.woff2') format('woff2');
-  font-weight: 700;
-  font-display: swap;
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
 :root {
-  /* La app es SIEMPRE clara. Declarar color-scheme evita el "force dark" de los
-     navegadores móviles (Chrome Android, Samsung Internet), que oscurecen sitios
-     sin opt-out → fondo negro no deseado. */
-  color-scheme: light;
-
-  /* ── Cool & Cozy ──  Superficie clara, cálida-fría: crema azulada en vez de
-     tinta oscura. Las cards van blanco puro sobre el fondo crema, separadas por
-     sombra ambiental suave (no bordes duros). */
-  --ink:        #f4f7f9;   /* fondo base de página */
-  --ink-2:      #eaeff3;   /* secciones alternas / fondo apenas más hondo */
-  --surface:    #ffffff;            /* cards: blanco puro */
-  --surface-2:  #f1f4f6;            /* superficie elevada suave */
-  --line:       #e3e9ed;            /* borde suave */
-  --line-2:     #cfd8de;            /* borde un poco más marcado */
-
-  /* Texto sobre superficie clara (carbón cálido, no negro puro). */
-  --text:       #181c1e;
-  --text-mid:   #33404a;   /* extra local: entre --text y --text-dim */
-  --text-dim:   #4a5560;
-  --text-faint: #8a95a0;
-
-  /* Acento de marca: azul "Cool & Cozy" (el ave azul). Botones primarios =
-     azul con texto blanco; también sirve como color de texto/borde de énfasis. */
-  --accent:       #00658c;
-  --accent-press: #00506f;
-  --accent-rgb:   0, 101, 140;
-  --accent-soft:  rgba(var(--accent-rgb), 0.10);
-  --accent-ink:   #ffffff;
-  /* Azul claro de marca + secundario menta (para chips/etiquetas). */
-  --brand-soft:   #72c1f0;
-  --mint:         #00897b;
-
-  /* Extras propios de Reputation, en versión clara (contraste sobre blanco):
-     dorado = confianza, violeta = conocimiento, rojo = error. */
-  --gold:       #c98a00;
-  --gold-2:     #e0a63a;
-  --know:       #6b4fd8;
-  --know-2:     #8f79ea;
-  --danger:     #b3261e;
-
-  /* Geometría redondeada (squircle / pill) del sistema Cool & Cozy. */
-  --radius:       1rem;
-  --radius-lg:    1.75rem;
-  --radius-pill:  9999px;
-
-  --font-display: 'Quicksand', 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-  --font-body:    'Quicksand', 'Hanken Grotesk', 'Segoe UI', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', ui-monospace, 'Consolas', monospace;
+  --ink:          var(--dt-bg);
+  --ink-2:        var(--dt-bg-2);
+  --surface:      var(--dt-surface);
+  --surface-2:    var(--dt-surface-2);
+  --line:         var(--dt-line-soft);
+  --line-2:       var(--dt-line);
+  --text:         var(--dt-text);
+  --text-mid:     var(--dt-text-dim);
+  --text-dim:     var(--dt-text-dim);
+  --text-faint:   var(--dt-text-faint);
+  --accent:       var(--dt-accent);
+  --accent-press: var(--dt-accent-press);
+  --accent-soft:  var(--dt-accent-tint);
+  --accent-ink:   var(--dt-accent-ink);
+  --brand-soft:   var(--dt-accent-soft);
+  --mint:         var(--dt-mint);
+  --gold:         var(--dt-gold);
+  --gold-2:       var(--dt-gold);
+  --know:         var(--dt-violet);
+  --know-2:       var(--dt-violet);
+  --danger:       var(--dt-error);
+  --radius:       var(--dt-radius);
+  --radius-lg:    var(--dt-radius-lg);
+  --radius-pill:  var(--dt-radius-pill);
+  --font-display: var(--dt-font);
+  --font-body:    var(--dt-font);
+  --font-mono:    var(--dt-font-mono);
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  /* Halos de acento muy suaves sobre el crema (equivalente claro del degradado
-     que tenía el tema oscuro). */
-  background:
-    radial-gradient(60rem 36rem at 82% -10%, rgba(var(--accent-rgb), 0.07), transparent 60%),
-    radial-gradient(48rem 34rem at 6% 6%, rgba(114, 193, 240, 0.10), transparent 62%),
-    var(--ink);
-  background-attachment: fixed;
+  background: var(--ink);
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
@@ -134,8 +57,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--ink); }
-::-webkit-scrollbar-thumb { background: #c2cdd5; border-radius: 6px; border: 2px solid var(--ink); }
-::-webkit-scrollbar-thumb:hover { background: #a9b6bf; }
+::-webkit-scrollbar-thumb { background: var(--dt-line); border-radius: 6px; border: 2px solid var(--ink); }
+::-webkit-scrollbar-thumb:hover { background: var(--dt-text-faint); }
 
 /* safe-area para topbar sticky y contenido (notch) */
 .topbar { padding-top: env(safe-area-inset-top); }

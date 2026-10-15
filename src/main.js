@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { registerSW } from 'virtual:pwa-register'
 import App from './App.vue'
+import '@dotrino/theme/theme.css'
 import './style.css'
 
 // PWA: recarga cuando el SW nuevo toma control + re-chequeo periódico, o la app

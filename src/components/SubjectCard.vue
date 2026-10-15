@@ -152,7 +152,7 @@ const aggConoce = computed(() => agg.value?.indicators?.conoce || null)
 <style scoped>
 /* Cool & Cozy: card blanca sobre el crema, separada por sombra ambiental suave
    (no borde duro). */
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: 0 8px 30px rgba(74, 85, 96, 0.06); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--dt-shadow); }
 .subj-head { display: flex; align-items: center; gap: 0.85rem; padding: 1.1rem 1.2rem; border-bottom: 1px solid var(--line); background: var(--surface-2); }
 .subj-badge { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px; font-size: 1.3rem; background: var(--accent-soft); color: var(--accent); flex: none; }
 .subj-id { display: flex; flex-direction: column; min-width: 0; }

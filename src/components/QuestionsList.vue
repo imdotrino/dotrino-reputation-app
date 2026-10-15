@@ -146,7 +146,7 @@ async function del (r) {
 .muted { color: var(--text-dim); }
 .empty { padding: 1.2rem 0; text-align: center; }
 .qlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
-.qitem { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: 0 8px 30px rgba(74, 85, 96, 0.05); }
+.qitem { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--dt-shadow); }
 .qmain { padding: 0.85rem 1rem; cursor: pointer; }
 .qmain:hover { background: var(--surface-2); }
 .qtext { color: var(--text); font-size: 1rem; line-height: 1.35; margin-bottom: 0.3rem; }
