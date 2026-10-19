@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { messages } from '../i18n'
 import { detectSubjectType, subjectRef } from '@dotrino/reputation'
+import { subjectIcon } from '../subjectIcons'
 
 const props = defineProps({
   lang: { type: String, default: 'es' },
@@ -45,8 +46,6 @@ async function submit () {
   }
   busy.value = false
 }
-
-const typeIcon = { domain: '🌐', x: '𝕏', github: '⌨', linkedin: 'in', email: '✉', profile: '👤' }
 </script>
 
 <template>
@@ -56,7 +55,7 @@ const typeIcon = { domain: '🌐', x: '𝕏', github: '⌨', linkedin: 'in', ema
       <div class="tchips">
         <button v-for="ty in TYPES" :key="ty" class="tchip" :class="{ on: type === ty }"
           role="radio" :aria-checked="type === ty" @click="pick(ty)" :data-testid="'type-' + ty">
-          <span class="cicon">{{ typeIcon[ty] }}</span>{{ t.types[ty] }}
+          <span class="cicon">{{ subjectIcon(ty) }}</span>{{ t.types[ty] }}
         </button>
       </div>
     </div>
@@ -73,7 +72,7 @@ const typeIcon = { domain: '🌐', x: '𝕏', github: '⌨', linkedin: 'in', ema
       <div class="chips">
         <button v-for="r in recents" :key="r.ref" class="chip" @click="emit('open', { ref: r.ref, type: r.type, value: r.label })"
           data-testid="recent-chip">
-          <span class="cicon">{{ typeIcon[r.type] || '•' }}</span>
+          <span class="cicon">{{ subjectIcon(r.type) }}</span>
           <span class="clabel">{{ r.type === 'email' ? '••••' : r.label }}</span>
         </button>
       </div>

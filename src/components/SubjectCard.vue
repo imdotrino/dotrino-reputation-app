@@ -4,6 +4,7 @@ import { messages } from '../i18n'
 import { getReputation } from '../services/reputation'
 import { myPubkey } from '../services/identity'
 import { parseSubjectRef } from '@dotrino/reputation'
+import { subjectIcon } from '../subjectIcons'
 
 const props = defineProps({
   subject: { type: String, required: true }, // ref canónico
@@ -15,7 +16,6 @@ const t = computed(() => messages[props.lang])
 const parsed = computed(() => parseSubjectRef(props.subject))
 // Largo a propósito: una cuenta siempre dice de qué red es ("Cuenta de LinkedIn").
 const typeLabel = computed(() => t.value.typesLong[parsed.value.type] || parsed.value.type)
-const typeIcon = { domain: '🌐', x: '𝕏', github: '⌨', linkedin: 'in', email: '✉', profile: '👤', unknown: '•' }
 
 // mi calificación (afinidad/confianza/conocimiento 0..5|null)
 const trust = ref(null)
@@ -81,7 +81,7 @@ const aggKnows = computed(() => agg.value?.indicators?.conoce || null)
 <template>
   <section class="card">
     <header class="subj-head">
-      <div class="subj-badge" :data-type="parsed.type">{{ typeIcon[parsed.type] || '•' }}</div>
+      <div class="subj-badge" :data-type="parsed.type">{{ subjectIcon(parsed.type) }}</div>
       <div class="subj-id">
         <span class="subj-type">{{ typeLabel }}</span>
         <span class="subj-val" :title="parsed.value">
