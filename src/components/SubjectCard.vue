@@ -8,23 +8,27 @@ import { subjectIcon } from '../subjectIcons'
 
 const props = defineProps({
   subject: { type: String, required: true }, // ref canónico
-  lang: { type: String, default: 'es' },
+  lang: { type: /** @type {import('vue').PropType<'es' | 'en'>} */ (String), default: 'es' },
 })
 const emit = defineEmits(['need-name'])
 const t = computed(() => messages[props.lang])
 
 const parsed = computed(() => parseSubjectRef(props.subject))
 // Largo a propósito: una cuenta siempre dice de qué red es ("Cuenta de LinkedIn").
-const typeLabel = computed(() => t.value.typesLong[parsed.value.type] || parsed.value.type)
+const typeLabel = computed(() => /** @type {Record<string, string>} */ (t.value.typesLong)[parsed.value.type] || parsed.value.type)
 
 // mi calificación (afinidad/confianza/conocimiento 0..5|null)
+/** @type {import('vue').Ref<number | null>} */
 const trust = ref(null)
+/** @type {import('vue').Ref<number | null>} */
 const affinity = ref(null)
+/** @type {import('vue').Ref<number | null>} */
 const knows = ref(null)
 const saving = ref(false)
 const savedFlash = ref(false)
 
 // agregado por mi red
+/** @type {import('vue').Ref<import('@dotrino/reputation').AggregateResult | null>} */
 const agg = ref(null)
 const loading = ref(true)
 
@@ -43,11 +47,16 @@ async function load () {
   } catch (_) {}
   loading.value = false
 }
+/** @param {unknown} v @returns {number | null} */
 const num = (v) => (typeof v === 'number' ? v : null)
 
 watch(() => props.subject, load)
 onMounted(load)
 
+/**
+ * @param {'trust' | 'affinity' | 'knows'} axis
+ * @param {number} v
+ */
 function setStar (axis, v) {
   const r = axis === 'trust' ? trust : axis === 'affinity' ? affinity : knows
   r.value = r.value === v ? 0 : v
@@ -57,6 +66,7 @@ async function save () {
   const rep = await getReputation()
   if (!rep) return
   if (!myPubkey()) { emit('need-name', save); return }
+  /** @type {Record<string, number>} */
   const map = {}
   if (trust.value != null) map.confianza = trust.value
   if (affinity.value != null) map.afinidad = affinity.value
@@ -68,10 +78,11 @@ async function save () {
     savedFlash.value = true
     setTimeout(() => (savedFlash.value = false), 1600)
     await load()
-  } catch (e) { console.warn('[rate]', e && e.message) }
+  } catch (e) { console.warn('[rate]', /** @type {Error} */ (e)?.message) }
   saving.value = false
 }
 
+/** @param {number | null | undefined} s */
 const pct = (s) => (s == null ? null : Math.round(s * 100))
 const aggTrust = computed(() => agg.value?.indicators?.confianza || null)
 const aggAffinity = computed(() => agg.value?.indicators?.afinidad || null)

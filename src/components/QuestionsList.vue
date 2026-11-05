@@ -6,19 +6,25 @@ import { myPubkey, nameOf } from '../services/identity'
 
 const props = defineProps({
   subject: { type: String, required: true },
-  lang: { type: String, default: 'es' },
+  lang: { type: /** @type {import('vue').PropType<'es' | 'en'>} */ (String), default: 'es' },
 })
 const emit = defineEmits(['need-name'])
 const t = computed(() => messages[props.lang])
 
+/** @typedef {import('@dotrino/reputation').RankedQuestion} RankedQuestion */
+
+/** @type {import('vue').Ref<RankedQuestion[]>} */
 const ranked = ref([])
 const loading = ref(true)
 const askText = ref('')
 const asking = ref(false)
+/** @type {import('vue').Ref<string | null>} */
 const openId = ref(null)          // pregunta expandida
 const answerText = ref('')
+/** @type {import('vue').Ref<Record<string, string | null>>} */
 const names = ref({})             // pk -> nombre|null
 
+/** @param {string[]} pks */
 async function resolveNames (pks) {
   await Promise.all([...new Set(pks)].filter((p) => p && names.value[p] === undefined).map(async (pk) => {
     names.value = { ...names.value, [pk]: await nameOf(pk) }
@@ -31,16 +37,19 @@ async function load () {
   if (!rep) { loading.value = false; return }
   try {
     ranked.value = await rep.rankQuestions(props.subject)
+    /** @type {string[]} */
     const pks = []
     for (const r of ranked.value) { pks.push(r.question.issuer); for (const a of r.answers) pks.push(a.issuer) }
     resolveNames(pks)
-  } catch (e) { console.warn('[rank]', e && e.message); ranked.value = [] }
+  } catch (e) { console.warn('[rank]', /** @type {Error} */ (e)?.message); ranked.value = [] }
   loading.value = false
 }
 watch(() => props.subject, () => { openId.value = null; load() })
 onMounted(load)
 
+/** @param {string} pk */
 const label = (pk) => (pk === myPubkey() ? t.value.questions.byMe : (names.value[pk] || short(pk)))
+/** @param {string} pk */
 function short (pk) { try { const j = JSON.parse(pk); return (j.x || '').slice(0, 6) + '…' } catch (_) { return (pk || '').slice(0, 6) + '…' } }
 
 async function ask () {
@@ -51,18 +60,21 @@ async function ask () {
   if (!myPubkey()) { emit('need-name', ask); return }
   asking.value = true
   try { await rep.postQuestion(props.subject, text); askText.value = ''; await load() }
-  catch (e) { console.warn('[ask]', e && e.message) }
+  catch (e) { console.warn('[ask]', /** @type {Error} */ (e)?.message) }
   asking.value = false
 }
 
+/** @param {RankedQuestion} r */
 function myAnswer (r) { return r.answers.find((a) => a.issuer === myPubkey()) || null }
 
+/** @param {RankedQuestion} r */
 function toggle (r) {
   if (openId.value === r.question.questionId) { openId.value = null; return }
   openId.value = r.question.questionId
   answerText.value = myAnswer(r)?.text || ''
 }
 
+/** @param {RankedQuestion} r */
 async function sendAnswer (r) {
   const text = answerText.value.trim()
   if (!text) return
@@ -70,9 +82,10 @@ async function sendAnswer (r) {
   if (!rep) return
   if (!myPubkey()) { emit('need-name', () => sendAnswer(r)); return }
   try { await rep.answer(r.question.questionId, text); await load() }
-  catch (e) { console.warn('[answer]', e && e.message) }
+  catch (e) { console.warn('[answer]', /** @type {Error} */ (e)?.message) }
 }
 
+/** @param {RankedQuestion} r */
 async function del (r) {
   const rep = await getReputation()
   if (!rep) return

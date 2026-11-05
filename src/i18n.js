@@ -3,6 +3,7 @@
 
 export const LANG_KEY = 'dotrino-reputation-app:lang'
 
+/** @returns {'es' | 'en'} */
 export function detectLang () {
   try {
     const saved = localStorage.getItem(LANG_KEY)
@@ -72,8 +73,8 @@ export const messages = {
       confianza: 'Confianza',
       conoce: 'Conocimiento',
       none: 'Nadie de tu red opinó todavía',
-      raw: (n) => `${n} ${n === 1 ? 'opinión' : 'opiniones'} en total`,
-      trusted: (n) => `${n} de tu red`,
+      raw: (/** @type {number} */ n) => `${n} ${n === 1 ? 'opinión' : 'opiniones'} en total`,
+      trusted: (/** @type {number} */ n) => `${n} de tu red`,
     },
     questions: {
       title: 'Preguntas',
@@ -84,8 +85,8 @@ export const messages = {
       answerPlaceholder: 'Tu respuesta…',
       myAnswer: 'Tu respuesta',
       empty: 'Aún no hay preguntas. Haz la primera.',
-      answers: (n) => `${n} ${n === 1 ? 'respuesta' : 'respuestas'}`,
-      fromNetwork: (n) => (n > 0 ? `${n} de tu red` : 'nadie de tu red'),
+      answers: (/** @type {number} */ n) => `${n} ${n === 1 ? 'respuesta' : 'respuestas'}`,
+      fromNetwork: (/** @type {number} */ n) => (n > 0 ? `${n} de tu red` : 'nadie de tu red'),
       delete: 'Borrar',
       byMe: 'tú',
     },
@@ -149,8 +150,8 @@ export const messages = {
       confianza: 'Trust',
       conoce: 'Knowledge',
       none: 'No one in your network has weighed in yet',
-      raw: (n) => `${n} ${n === 1 ? 'opinion' : 'opinions'} total`,
-      trusted: (n) => `${n} from your network`,
+      raw: (/** @type {number} */ n) => `${n} ${n === 1 ? 'opinion' : 'opinions'} total`,
+      trusted: (/** @type {number} */ n) => `${n} from your network`,
     },
     questions: {
       title: 'Questions',
@@ -161,8 +162,8 @@ export const messages = {
       answerPlaceholder: 'Your answer…',
       myAnswer: 'Your answer',
       empty: 'No questions yet. Ask the first one.',
-      answers: (n) => `${n} ${n === 1 ? 'answer' : 'answers'}`,
-      fromNetwork: (n) => (n > 0 ? `${n} from your network` : 'none from your network'),
+      answers: (/** @type {number} */ n) => `${n} ${n === 1 ? 'answer' : 'answers'}`,
+      fromNetwork: (/** @type {number} */ n) => (n > 0 ? `${n} from your network` : 'none from your network'),
       delete: 'Delete',
       byMe: 'you',
     },

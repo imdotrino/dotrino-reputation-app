@@ -15,11 +15,21 @@ const lang = ref(detectLang())
 watch(lang, (l) => { try { localStorage.setItem(LANG_KEY, l) } catch (_) {}; document.documentElement.lang = l }, { immediate: true })
 const t = computed(() => messages[lang.value])
 
+/**
+ * El sujeto abierto.
+ * @typedef {{ ref: string, type: string, value: string }} Subject
+ */
+
+/** @type {import('vue').Ref<import('@dotrino/identity').Identity | null>} */
 const identityInst = ref(null)
+/** @type {import('vue').Ref<import('@dotrino/reputation').VaultReputation | null>} */
 const reputationInst = ref(null)
+/** @type {import('vue').Ref<import('@dotrino/topbar').DotrinoTopbar | null>} */
 const topbarRef = ref(null)
+/** @type {import('vue').Ref<import('./services/store').RecentSubject[]>} */
 const recents = ref([])
-const current = ref(null)        // { ref, type, value }
+/** @type {import('vue').Ref<Subject | null>} */
+const current = ref(null)
 
 // Pasa identity/reputation/tema al topbar (propiedades JS del Web Component).
 watchEffect(() => {
@@ -38,20 +48,24 @@ watchEffect(() => {
 
 // need-name: acciones firmadas requieren apodo. Si falta, abrimos el perfil
 // EDITABLE (el topbar lo abre) y reanudamos la acción al guardar el nombre.
+/** @type {(() => void) | null} */
 let pendingAction = null
+/** @param {() => void} run */
 async function needName (run) {
   await getIdentity()
   if (myPubkey() && identityInst.value?.me?.nickname) { run(); return }
   pendingAction = run
-  try { topbarRef.value?.openMyProfile({ editable: true }) } catch (_) {}
+  try { topbarRef.value?.openMyProfile() } catch (_) {}
 }
 function onProfileName () {
   const run = pendingAction; pendingAction = null
   if (run) run()
 }
 
+/** @param {CustomEvent<{ lang?: string }>} e */
 const onLang = (e) => { const l = e?.detail?.lang; if (l === 'es' || l === 'en') lang.value = l }
 
+/** @param {Subject} s */
 async function openSubject (s) {
   current.value = s
   try { history.replaceState(history.state, '', '#s=' + encodeURIComponent(s.ref)) } catch (_) {}

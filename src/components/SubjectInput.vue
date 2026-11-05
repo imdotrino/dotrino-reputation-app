@@ -5,8 +5,8 @@ import { detectSubjectType, subjectRef } from '@dotrino/reputation'
 import { subjectIcon } from '../subjectIcons'
 
 const props = defineProps({
-  lang: { type: String, default: 'es' },
-  recents: { type: Array, default: () => [] },
+  lang: { type: /** @type {import('vue').PropType<'es' | 'en'>} */ (String), default: 'es' },
+  recents: { type: /** @type {import('vue').PropType<import('../services/store').RecentSubject[]>} */ (Array), default: () => [] },
 })
 const emit = defineEmits(['open'])
 const t = computed(() => messages[props.lang])
@@ -17,7 +17,10 @@ const busy = ref(false)
 // Una cuenta es SIEMPRE de una red concreta, así que el tipo se elige, no se
 // adivina: '@juan' puede ser de X, de LinkedIn o de GitHub — tres sujetos
 // distintos, seguramente tres personas distintas.
+/** @typedef {import('@dotrino/reputation').SubjectType} SubjectType */
+/** @type {import('vue').Ref<SubjectType>} */
 const type = ref('domain')
+/** @type {SubjectType[]} */
 const TYPES = ['domain', 'x', 'linkedin', 'github', 'email', 'profile']
 
 // Si lo pegado dice el tipo sin lugar a dudas (un enlace, un correo, una llave),
@@ -27,6 +30,7 @@ function onInput () {
   const t_ = detectSubjectType(text.value.trim())
   if (t_ && t_ !== type.value) type.value = t_
 }
+/** @param {SubjectType} t_ */
 function pick (t_) { type.value = t_; error.value = '' }
 
 async function submit () {
